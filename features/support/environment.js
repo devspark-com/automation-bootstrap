@@ -7,7 +7,11 @@ module.exports = {
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
     'browserName': (process.env.TEST_BROWSER_NAME || 'chrome'),
-    'version': (process.env.TEST_BROWSER_VERSION || 'ANY')
+    'version': (process.env.TEST_BROWSER_VERSION || 'ANY'),
+    // Chrome is not allowed to create a SUID sandbox when running inside Docker
+    'chromeOptions': {
+      'args': ['no-sandbox']
+    }
   },
 
   // Default http port to host the web server

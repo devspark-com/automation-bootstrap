@@ -1,7 +1,7 @@
 var env = require('./features/support/environment.js');
 
 exports.config = {
-  //seleniumAddress: env.seleniumAddress,
+  seleniumAddress: env.seleniumAddress,
 
   // Spec patterns are relative to this directory.
   specs: [
@@ -15,7 +15,7 @@ exports.config = {
 
   framework: 'custom',
 
-  frameworkPath: 'node_modules/protractor-cucumber-framework/index.js',
+  frameworkPath: require.resolve('protractor-cucumber-framework'),
 
   cucumberOpts: {
     // Require files before executing the features.
@@ -56,6 +56,18 @@ exports.config = {
     //       // you are using multiCapabilities.
     //       console.log('Executing capability', config.capabilities);
     //     });
+
+    // Use the external Chai As Promised to deal with resolving promises in expectations.
+    var chai = require('chai');
+    var chaiAsPromised = require('chai-as-promised');
+    console.log('########## PROTRACTOR ##########');
+
+    chai.use(chaiAsPromised);
+    global.expect = chai.expect;
+
+    // Chai expect().to.exist syntax makes default jshint unhappy. jshint expr:true
+
+    
   },
 
   // The params object will be passed directly to the Protractor instance,
